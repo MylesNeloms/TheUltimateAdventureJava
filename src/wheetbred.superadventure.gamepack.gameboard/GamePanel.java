@@ -1,4 +1,4 @@
-package GameBoard;
+package wheetbred.superadventure.gamepack.gameboard;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
