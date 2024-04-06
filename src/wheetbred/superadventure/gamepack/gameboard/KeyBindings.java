@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JPanel;
 
 public class KeyBindings {
     // classes and vars to be used in the constructor
@@ -18,13 +17,15 @@ public class KeyBindings {
     Action rightAction;
     private Player playerRef;
     private GamePanel gPanelRef;
+    private GameMap gameMap;
 
     // generator for testing map changes.
     Generator map = new Generator();
-    public KeyBindings(Player player, GamePanel panel) {
+    public KeyBindings(Player player, GamePanel panel, GameMap map) {
         // reference to player and Jframe to update the display and user locations
-        playerRef = player;
-        gPanelRef = panel;
+        this.playerRef = player;
+        this.gPanelRef = panel;
+        this.gameMap = map;
         upAction = new UpAction();
         downAction = new DownAction();
         leftAction = new LeftAction();
@@ -35,10 +36,22 @@ public class KeyBindings {
     private class UpAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
-            int newPosition = playerRef.getplayerY()+1;
-            playerRef.setPlayerY(newPosition);
+            int newPosition = playerRef.getY()+1;
+            int cross = 0;
+            if (newPosition == gameMap.gameMap.length - 1) {
+                newPosition = 0;
+                cross = 1;
+            }
+            int unchanged = playerRef.getX();
+            int[] oldPosition = playerRef.move(unchanged,newPosition,cross,"  ^  ");
+            gameMap.setPlayer(playerRef,oldPosition[0],oldPosition[1]);
             // System.out.println(" UpAction X: " + p.playerX + "Y: " + p.playerY);
-            gPanelRef.refreshGrid(map.generateAlternateMap("U"));
+            
+            
+            gPanelRef.refreshGrid(gameMap);
+            System.out.println("X: " + unchanged);
+            System.out.println("Y: " + newPosition);
+            System.out.println("-------------------");
         }
         
     }
@@ -47,9 +60,20 @@ public class KeyBindings {
     private class DownAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
-            int newPosition = playerRef.getplayerY()-1;
-            playerRef.setPlayerY(newPosition);
-            gPanelRef.refreshGrid(map.generateAlternateMap("D"));
+            int newPosition = playerRef.getY()-1;
+            int cross = 0;
+            if (newPosition < 0) {
+                newPosition = gameMap.gameMap.length - 2;
+                cross = 2;
+            }
+            int unchanged = playerRef.getX();
+            int[] oldPosition = playerRef.move(unchanged,newPosition,cross,"  v  ");
+            gameMap.setPlayer(playerRef,oldPosition[0],oldPosition[1]);
+
+            gPanelRef.refreshGrid(gameMap);
+            System.out.println("X: " + unchanged);
+            System.out.println("Y: " + newPosition);
+            System.out.println("-------------------");
         }
         
     }
@@ -58,9 +82,20 @@ public class KeyBindings {
     private class LeftAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
-            int newPosition = playerRef.getplayerX()-1;
-            playerRef.setPlayerX(newPosition);
-            gPanelRef.refreshGrid(map.generateAlternateMap("L"));
+            int newPosition = playerRef.getX()-1;
+            int cross = 0;
+            if (newPosition < 0) {
+                newPosition = gameMap.gameMap[0].length - 2;
+                cross = 3;
+            }
+            int unchanged = playerRef.getY();
+            int[] oldPosition = playerRef.move(newPosition,unchanged,cross, "  <  ");
+            gameMap.setPlayer(playerRef,oldPosition[0],oldPosition[1]);
+
+            gPanelRef.refreshGrid(gameMap);
+            System.out.println("X: " + newPosition);
+            System.out.println("Y: " + unchanged);
+            System.out.println("-------------------");
         }
         
     }
@@ -69,9 +104,20 @@ public class KeyBindings {
     private class RightAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
-            int newPosition = playerRef.getplayerX()+1;
-            playerRef.setPlayerX(newPosition);
-            gPanelRef.refreshGrid(map.generateAlternateMap("R"));
+            int newPosition = playerRef.getX()+1;
+            int cross = 0;
+            if (newPosition == gameMap.gameMap[0].length - 1) {
+                newPosition =  0;
+                cross = 4;
+            }
+            int unchanged = playerRef.getY();
+            int[] oldPosition = playerRef.move(newPosition,unchanged,cross,"  >  ");
+            gameMap.setPlayer(playerRef,oldPosition[0],oldPosition[1]);
+            
+            gPanelRef.refreshGrid(gameMap);
+            System.out.println("X: " + newPosition);
+            System.out.println("Y: " + unchanged);
+            System.out.println("-------------------");
         }
         
     }

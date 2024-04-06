@@ -1,37 +1,28 @@
 package wheetbred.superadventure.gamepack.gameboard;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
-import wheetbred.superadventure.gamepack.mapgenerator.GameMap;
-import wheetbred.superadventure.gamepack.mapgenerator.Generator;
 import wheetbred.superadventure.gamepack.entities.*;
+import wheetbred.superadventure.gamepack.mapgenerator.GameMap;
 
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.List;
 
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
+
 
 public class GamePanel extends JPanel implements ActionListener {
     /*
@@ -42,7 +33,6 @@ public class GamePanel extends JPanel implements ActionListener {
     GridBagLayout gridBounds =  new GridBagLayout();
     
     Timer timer;
-    Random random;
 
     // Default Player Position
     int playerX = 100;
@@ -52,13 +42,13 @@ public class GamePanel extends JPanel implements ActionListener {
 
     //Initialize key Bindings
     KeyBindings kb;
-    DefaultListModel<String> model = new DefaultListModel<>();
+
 
     // String[][] gamemap1 = map1.generateAlternateMap();
 
-    public GamePanel(String[][] gamemap) {
+    public GamePanel(GameMap gameMap) {
         // adding keybindings to listen to keyboard inputs
-        kb = new KeyBindings(player, this);
+        kb = new KeyBindings(player, this, gameMap);
         JLabel label = new JLabel();
         label.setBounds(super.getBounds());
 
@@ -77,21 +67,23 @@ public class GamePanel extends JPanel implements ActionListener {
         label.getActionMap().put("rightAction", kb.rightAction);
         this.add(label);
 
-        random = new Random();
         this.setPreferredSize(new Dimension(super.getWidth(),super.getHeight()));
         this.setBackground(Color.white);
         this.setDoubleBuffered(true);
         this.setFocusable(true);
         // this.requestFocusInWindow();
         this.setLayout(gridBounds);
-        refreshGrid(gamemap);
-        
+        refreshGrid(gameMap);
+        System.out.println(gameMap.visibleMap[0].length);
+        // System.out.println(Arrays.deepToString(gameMap.visibleMap));
     }
 
 
 
-    public void refreshGrid(String[][] newGameMap) {
+    public void refreshGrid(GameMap newGameMap) {
         // get and remove all grid components
+        List<DefaultListModel> models;
+        List<JList> rows;
         Component[] compList = this.getComponents();
         for(Component c : compList) {
             if (c instanceof JList) {
@@ -100,25 +92,33 @@ public class GamePanel extends JPanel implements ActionListener {
             }
         }
         // display new game map
-        for (int i = 0; i < newGameMap.length; i++) {
-            for (int j = 0; j < newGameMap[i].length; j++) {
+        for (int i = 0; i < newGameMap.visibleMap.length; i++) {
+            DefaultListModel<String> model = new DefaultListModel<>();
+            for (int j = 0; j < newGameMap.visibleMap[i].length; j++) {
                 try {
-                    model.set(j, newGameMap[i][j]);
+                    model.set(j, newGameMap.visibleMap[i][j]);
                 } catch ( Exception e) {
-                    model.add(j, newGameMap[i][j]);
-                }                  
+                    model.add(j, newGameMap.visibleMap[i][j]);
+                } 
+                // models.add(model);
         }
-            JList<String> row  = new JList<>(model);
-            row.setFixedCellHeight(20);
-            row.setFixedCellWidth(30);
-            this.add(row);
+        JList<String> row  = new JList<>(model);
+        row.setFixedCellHeight(20);
+        row.setFixedCellWidth(30);
+        row.setEnabled(false);
+        this.add(row);
         }
+
+        // for (DefaultListModel model : models) {
+
+        // }
+
         }
     
-    public void update(String[][] gamemap) {
+    // public void update(String[][] gamemap) {
 
-        refreshGrid(gamemap);
-    }
+    //     refreshGrid(gamemap);
+    // }
 
 
     public void paintComponent(Graphics g) {

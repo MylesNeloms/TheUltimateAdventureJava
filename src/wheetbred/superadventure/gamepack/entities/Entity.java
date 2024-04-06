@@ -3,17 +3,24 @@ package wheetbred.superadventure.gamepack.entities;
  * Base class to hold basic methods for moving and locating non player characters
  */
 abstract class Entity {
-    public static int entityX, entityY;
+    public static int X, Y;
 
 
-    public static int getEntityX() {
-        return entityX;
+    public int getX() {
+        return X;
     }
 
-    public static int getEntityY() {
-        return entityY;
+    public int getY() {
+        return Y;
     }
 
-    abstract void move();
+    private void setY(int newY) {
+        Entity.Y = newY;
+    }
+    private void setX(int newX) {
+        this.X = newX;
+    }
+
+    public abstract void move();
     
 }
