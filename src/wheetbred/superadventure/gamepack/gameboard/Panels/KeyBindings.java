@@ -1,4 +1,4 @@
-package wheetbred.superadventure.gamepack.gameboard;
+package wheetbred.superadventure.gamepack.gameboard.Panels;
 
 import wheetbred.superadventure.gamepack.entities.Player;
 import wheetbred.superadventure.gamepack.mapgenerator.GameMap;

@@ -1,4 +1,4 @@
-package wheetbred.superadventure.gamepack.gameboard;
+package wheetbred.superadventure.gamepack.gameboard.Panels;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
@@ -47,7 +47,7 @@ public class GamePanel extends JPanel {
 
         // Creating an invisible label to add key bindings set to size of gameframe
         JLabel label = new JLabel();
-        label.setBounds(super.getBounds());
+        label.setBounds(0,0,600,600);
 
         // Add keybindings to invisible label
         label.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("UP"),"upAction");
@@ -65,14 +65,11 @@ public class GamePanel extends JPanel {
         // Add label to panel
         this.add(label);
 
-        // set size and background color
-        this.setPreferredSize(new Dimension(super.getWidth(),super.getHeight()));
-        // this.setDoubleBuffered(true);
+        // set size and layout then display grid
+        this.setBounds(0,0, 430, 540);
         this.setFocusable(true);
         this.setLayout(gridBounds);
         refreshGrid(gameMap);
-        System.out.println(gameMap.visibleMap[0].length);
-        // System.out.println(Arrays.deepToString(gameMap.visibleMap));
     }
 
 

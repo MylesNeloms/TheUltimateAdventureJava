@@ -1,6 +1,7 @@
 package wheetbred.superadventure.gamepack.gameboard;
 
 import wheetbred.superadventure.gamepack.entities.Player;
+import wheetbred.superadventure.gamepack.gameboard.Frames.GameFrame;
 import wheetbred.superadventure.gamepack.gameboard.Gamestate.State;
 import wheetbred.superadventure.gamepack.mapgenerator.GameMap;
 

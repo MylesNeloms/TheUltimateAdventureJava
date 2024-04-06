@@ -4,6 +4,7 @@ package wheetbred.superadventure.gamepack.entities;
  */
 abstract class Entity {
     public static int X, Y;
+    private String previousTile;
 
 
     public int getX() {
@@ -15,10 +16,18 @@ abstract class Entity {
     }
 
     private void setY(int newY) {
-        Entity.Y = newY;
+        Y = newY;
     }
     private void setX(int newX) {
-        this.X = newX;
+        X = newX;
+    }
+
+    public String getPreviousTile() {
+        return previousTile;
+    }
+
+    public void setPreviousTile(String previousTile) {
+        this.previousTile = previousTile;
     }
 
     public abstract void move();

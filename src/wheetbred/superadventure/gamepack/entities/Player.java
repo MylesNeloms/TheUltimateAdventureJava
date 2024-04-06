@@ -7,7 +7,7 @@ import wheetbred.superadventure.gamepack.mapgenerator.GameMap;
 /*
  * Base class to hold basic methods for moving and locating non player characters
  */
-public class Player {
+public class Player extends Entity{
     // Vars for player position
     private static int X, Y;
 
@@ -134,6 +134,14 @@ public class Player {
 
         // return old tile position previous tile to gamemap
         return(oldPosition);
+    }
+
+
+
+    @Override
+    public void move() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'move'");
     }
     
 }
