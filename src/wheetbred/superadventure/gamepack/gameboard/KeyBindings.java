@@ -26,28 +26,37 @@ public class KeyBindings {
         this.playerRef = player;
         this.gPanelRef = panel;
         this.gameMap = map;
+        // Initialize Actions
         upAction = new UpAction();
         downAction = new DownAction();
         leftAction = new LeftAction();
         rightAction = new RightAction();
     }
 
-    // Action event on up input
+    // Action event on up input. Comments here apply to all abstract actions added to this class
     private class UpAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
+            // Calculate new player position
+            // set cross to default value of 0. This var tracks when the player crosses map borders
             int newPosition = playerRef.getY()+1;
+            int unchanged = playerRef.getX();
             int cross = 0;
-            if (newPosition == gameMap.gameMap.length - 1) {
+            // Check if the new position crosses the gamemap border
+            // reset position to accurate val,
+            if (newPosition > gameMap.gameMap.length - 2) {
                 newPosition = 0;
                 cross = 1;
             }
-            int unchanged = playerRef.getX();
+
+            
+            // Update the player with the new position value. Move returns an array of the old position 
+            // so that gamemap can reset that index to it's previous value while updating map to move player character
             int[] oldPosition = playerRef.move(unchanged,newPosition,cross,"  ^  ");
             gameMap.setPlayer(playerRef,oldPosition[0],oldPosition[1]);
-            // System.out.println(" UpAction X: " + p.playerX + "Y: " + p.playerY);
+
             
-            
+            // Refresh the grid with the newly updated gameMap
             gPanelRef.refreshGrid(gameMap);
             System.out.println("X: " + unchanged);
             System.out.println("Y: " + newPosition);
@@ -61,12 +70,13 @@ public class KeyBindings {
         @Override
         public void actionPerformed(ActionEvent e) {
             int newPosition = playerRef.getY()-1;
+            int unchanged = playerRef.getX();
             int cross = 0;
             if (newPosition < 0) {
                 newPosition = gameMap.gameMap.length - 2;
                 cross = 2;
             }
-            int unchanged = playerRef.getX();
+
             int[] oldPosition = playerRef.move(unchanged,newPosition,cross,"  v  ");
             gameMap.setPlayer(playerRef,oldPosition[0],oldPosition[1]);
 
@@ -83,12 +93,13 @@ public class KeyBindings {
         @Override
         public void actionPerformed(ActionEvent e) {
             int newPosition = playerRef.getX()-1;
+            int unchanged = playerRef.getY();
             int cross = 0;
             if (newPosition < 0) {
                 newPosition = gameMap.gameMap[0].length - 2;
                 cross = 3;
             }
-            int unchanged = playerRef.getY();
+
             int[] oldPosition = playerRef.move(newPosition,unchanged,cross, "  <  ");
             gameMap.setPlayer(playerRef,oldPosition[0],oldPosition[1]);
 
@@ -105,12 +116,13 @@ public class KeyBindings {
         @Override
         public void actionPerformed(ActionEvent e) {
             int newPosition = playerRef.getX()+1;
+            int unchanged = playerRef.getY();
             int cross = 0;
-            if (newPosition == gameMap.gameMap[0].length - 1) {
+            if (newPosition > gameMap.gameMap[0].length - 2) {
                 newPosition =  0;
                 cross = 4;
             }
-            int unchanged = playerRef.getY();
+
             int[] oldPosition = playerRef.move(newPosition,unchanged,cross,"  >  ");
             gameMap.setPlayer(playerRef,oldPosition[0],oldPosition[1]);
             

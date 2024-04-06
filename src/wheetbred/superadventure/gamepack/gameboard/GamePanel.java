@@ -6,39 +6,32 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
-import javax.swing.Timer;
+
 
 import wheetbred.superadventure.gamepack.entities.*;
 import wheetbred.superadventure.gamepack.mapgenerator.GameMap;
 
-import java.awt.Color;
+
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Graphics;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Arrays;
+
 import java.util.List;
 
 
 
-public class GamePanel extends JPanel implements ActionListener {
+public class GamePanel extends JPanel {
     /*
     Changed to use GridBag constraints as this will display my Map(array of Characters) in 
     a simpler way than painting each element
     */ 
     GridBagConstraints gbc = new GridBagConstraints();
     GridBagLayout gridBounds =  new GridBagLayout();
-    
-    Timer timer;
 
-    // Default Player Position
-    int playerX = 100;
-    int playerY = 100;
-    int playerSpeed = 3;
-    Player player = new Player();
+
+    private Player player;
 
     //Initialize key Bindings
     KeyBindings kb;
@@ -47,8 +40,12 @@ public class GamePanel extends JPanel implements ActionListener {
     // String[][] gamemap1 = map1.generateAlternateMap();
 
     public GamePanel(GameMap gameMap) {
-        // adding keybindings to listen to keyboard inputs
+        // get a reference to the player object
+        player = GameMap.getPlayer(gameMap);
+        // adding keybindings to listen to keyboard inputs and update player position and visible map
         kb = new KeyBindings(player, this, gameMap);
+
+        // Creating an invisible label to add key bindings set to size of gameframe
         JLabel label = new JLabel();
         label.setBounds(super.getBounds());
 
@@ -65,13 +62,13 @@ public class GamePanel extends JPanel implements ActionListener {
         label.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("RIGHT"),"rightAction");
         label.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('d'),"rightAction");
         label.getActionMap().put("rightAction", kb.rightAction);
+        // Add label to panel
         this.add(label);
 
+        // set size and background color
         this.setPreferredSize(new Dimension(super.getWidth(),super.getHeight()));
-        this.setBackground(Color.white);
-        this.setDoubleBuffered(true);
+        // this.setDoubleBuffered(true);
         this.setFocusable(true);
-        // this.requestFocusInWindow();
         this.setLayout(gridBounds);
         refreshGrid(gameMap);
         System.out.println(gameMap.visibleMap[0].length);
@@ -79,7 +76,7 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
 
-
+    // Method used to update GameFrame...panel as player moves over the map
     public void refreshGrid(GameMap newGameMap) {
         // get and remove all grid components
         List<DefaultListModel> models;
@@ -93,6 +90,8 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         // display new game map
         for (int i = 0; i < newGameMap.visibleMap.length; i++) {
+            // Use default list mode for even spacing add each model to a JList then add that to the panel. 
+            // panel Fills from top to bottom
             DefaultListModel<String> model = new DefaultListModel<>();
             for (int j = 0; j < newGameMap.visibleMap[i].length; j++) {
                 try {
@@ -108,27 +107,8 @@ public class GamePanel extends JPanel implements ActionListener {
         row.setEnabled(false);
         this.add(row);
         }
-
-        // for (DefaultListModel model : models) {
-
-        // }
-
-        }
-    
-    // public void update(String[][] gamemap) {
-
-    //     refreshGrid(gamemap);
-    // }
-
-
-    public void paintComponent(Graphics g) {
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
-        // update();
-    }
 }
 
 

@@ -34,12 +34,13 @@ public class Generator {
                 }
             }
             }
+
+            // return generated map
             System.out.println(Arrays.deepToString(grid));
-            // grid = Player.addPlayer(grid);
-            // System.out.println(Arrays.deepToString(Player.addPlayer(grid)));
             return grid;
         }
 
+        // test func for early map creation.... removing soon
         public String[][] generateAlternateMap(String x) {
             String newGrid[][] = new String[MAP_WIDTH][MAP_HEIGHT];
             for (int i = 0; i < grid.length; i++) {
