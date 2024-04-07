@@ -1,8 +1,8 @@
 package wheetbred.superadventure.gamepack.gameboard.Panels;
 
 import wheetbred.superadventure.gamepack.entities.Player;
-import wheetbred.superadventure.gamepack.mapgenerator.GameMap;
-import wheetbred.superadventure.gamepack.mapgenerator.Generator;
+import wheetbred.superadventure.gamepack.map.GameMap;
+import wheetbred.superadventure.gamepack.map.MapGenerator;
 
 import java.awt.event.ActionEvent;
 
@@ -20,7 +20,7 @@ public class KeyBindings {
     private GameMap gameMap;
 
     // generator for testing map changes.
-    Generator map = new Generator();
+    MapGenerator map = new MapGenerator();
     public KeyBindings(Player player, GamePanel panel, GameMap map) {
         // reference to player and Jframe to update the display and user locations
         this.playerRef = player;

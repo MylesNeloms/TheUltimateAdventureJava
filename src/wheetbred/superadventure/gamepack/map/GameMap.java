@@ -1,4 +1,4 @@
-package wheetbred.superadventure.gamepack.mapgenerator;
+package wheetbred.superadventure.gamepack.map;
 
 import java.lang.reflect.Array;
 
@@ -11,8 +11,6 @@ The map will be an array of characters, intended to be organized by a grid. Map 
 */ 
 
 public class GameMap {
-    // Create generator for Constructor to create game map
-    private final static Generator mapGen = new Generator();
     // visible map is populated with the subset of the gameMap surrounding player
     public String[][] visibleMap = new String[12][25];
     public String[][] gameMap;
@@ -20,10 +18,13 @@ public class GameMap {
     private Player playerRef;
     private int[] initLocation = new int[2];
 
+    // LandMarks
+
 
     public GameMap(Player player) {
         // Generate Game map on creation
-        this.gameMap = mapGen.generateBaseMap();
+        this.gameMap = MapGenerator.generateBaseMap();
+        this.gameMap = MapGenerator.addLandMarks(this);
         // Set map dimensions
         mapDimensionX = this.gameMap.length - 1;
         mapDimensionY = this.gameMap[0].length - 1;

@@ -1,4 +1,7 @@
 package wheetbred.superadventure.gamepack.entities;
+
+import wheetbred.superadventure.gamepack.items.ItemGenerator;
+
 /*
  * Base class to hold basic methods for moving and locating non player characters
  */

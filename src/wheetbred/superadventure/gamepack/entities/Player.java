@@ -2,18 +2,29 @@ package wheetbred.superadventure.gamepack.entities;
 
 import java.lang.reflect.Array;
 
-import wheetbred.superadventure.gamepack.mapgenerator.GameMap;
+import wheetbred.superadventure.gamepack.items.Inventory;
+import wheetbred.superadventure.gamepack.items.ItemGenerator;
+import wheetbred.superadventure.gamepack.map.GameMap;
 
 /*
  * Base class to hold basic methods for moving and locating non player characters
  */
 public class Player extends Entity{
+
     // Vars for player position
-    private static int X, Y;
+    private int X, Y;
+    private int health;
+    private int maxHealth;
+
+    private int stepCount;
+    private int stepsFromStart;
 
     // Vars for setting player tile to appropriate character
     private static String previousTile;
     private static String playerTile;
+
+    public Inventory inventory;
+    
 
     // Vars for compass calculations
     private static String northOrSouth;
@@ -23,9 +34,21 @@ public class Player extends Entity{
         X = 25;
         Y = 25;
 
+        // Set health and begin counting steps. Possible that wandering could span events in game
+        health = 100;
+        stepCount = 0;
+        stepsFromStart = 0;
+
+
+        // initialize the players inventory
+        inventory = ItemGenerator.initPlayerInventory(this);
+
+
+
         // Default player tile facing north. Replace init tile with "." May use this later for story
         playerTile = "  ^  ";
         previousTile = "  .  ";
+
 
         // Compass initially pointing north. Will likely add this functionality to an item
         northOrSouth = "NORTH";
@@ -34,7 +57,24 @@ public class Player extends Entity{
 
 
 
+
     // Setters
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
+    public void setHealth(int health) {
+        if (this.health + health > this.maxHealth) {
+            this.health = maxHealth;
+        } else {
+            this.health += health;
+        }
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
     private void setX(int playerX) {
         X = playerX;
     }
@@ -49,7 +89,7 @@ public class Player extends Entity{
 
     public void setPreviousTile(String oldTile) {
         previousTile = oldTile;
-     }
+    }
 
     public void setplayerDirection(int direction) {
         switch(direction) {
@@ -72,6 +112,10 @@ public class Player extends Entity{
      }
 
     // Getters for static vars
+    public Inventory getInventory() {
+        return inventory;
+    }
+
     public int getX() {
         return X;
     }
@@ -98,7 +142,7 @@ public class Player extends Entity{
             default:
                 return "N/a";
         }
-     }
+    }
     
     // Change player position and direction
     public int[] move(int newX, int newY, int cross, String tile) {
@@ -123,15 +167,22 @@ public class Player extends Entity{
                 eastOrWest = "WEST";
                 break;
         }
-        System.out.println(northOrSouth);
-        System.out.println(eastOrWest);
-        System.out.println(cross);
+        // System.out.println(northOrSouth);
+        // System.out.println(eastOrWest);
+        // System.out.println(cross);
 
         // Set new player direction and tile
         this.setX(newX);
         this.setY(newY);
         this.setPlayerTile(tile);
+        stepCount++;
+        stepsFromStart++;
+        if (stepCount > 3) {
+            stepCount = 0;
+            health -= (int)(Math.random() * 6);
+        }
 
+        System.out.println("Health:  " + health);
         // return old tile position previous tile to gamemap
         return(oldPosition);
     }

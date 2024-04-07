@@ -9,8 +9,7 @@ import javax.swing.KeyStroke;
 
 
 import wheetbred.superadventure.gamepack.entities.*;
-import wheetbred.superadventure.gamepack.mapgenerator.GameMap;
-
+import wheetbred.superadventure.gamepack.map.GameMap;
 
 import java.awt.Component;
 import java.awt.Dimension;

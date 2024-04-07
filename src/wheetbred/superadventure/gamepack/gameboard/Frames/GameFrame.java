@@ -2,7 +2,7 @@ package wheetbred.superadventure.gamepack.gameboard.Frames;
 
 import wheetbred.superadventure.gamepack.gameboard.Panels.GamePanel;
 import wheetbred.superadventure.gamepack.gameboard.Panels.InfoPanel;
-import wheetbred.superadventure.gamepack.mapgenerator.GameMap;
+import wheetbred.superadventure.gamepack.map.GameMap;
 
 import java.awt.BorderLayout;
 import java.awt.Button;
